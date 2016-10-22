@@ -12,6 +12,11 @@ app.config(function ($routeProvider) {
     controller: 'profileController',
     access: {restricted: true}
   })
+  .when('/class',{
+    templateUrl: '/partials/class.view.html',
+    controller: 'classController',
+    access: {restricted: true}
+  })
 })
 
 app.run(function ($rootScope, $location, $route, services) {

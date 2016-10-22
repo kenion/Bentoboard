@@ -3,14 +3,24 @@ var app = angular.module("app");
 app.factory('services',['$q','$http',function($q,$http){
   var user = null;
   var userData = {};
+  var userName = {};
+  var classInfo = {};
 
   return({
     isLoggedIn: isLoggedIn,
     login: login,
     logout: logout,
     getUserStatus: getUserStatus,
-    getInformation: getInformation
+    getInformation: getInformation,
+    getStudentClass: getStudentClass,
+    getProfessorClass: getProfessorClass,
+    getUserName: getUserName,
+    getClass: getClass,
+    setClass: setClass,
+    sendAnnoucement: sendAnnoucement
   })
+
+
 
   function isLoggedIn(){
     if(user){
@@ -19,6 +29,44 @@ app.factory('services',['$q','$http',function($q,$http){
     else{
       return false;
     }
+  }
+
+  function getStudentClass(){
+    return $http.get("student/class")
+    .success(function(response){
+      console.log(response)
+      userName.firstName = response[0].student_first_name;
+      userName.lastName = response[0].student_last_name;
+      return response;
+    })
+    .error(function(){
+      return {err:"err"}
+    })
+  }
+
+  function setClass(classID){
+    classInfo = classID;
+  }
+
+  function getClass(){
+    return classInfo;
+  }
+
+  function getProfessorClass(){
+    return $http.get("professor/class")
+    .success(function(response){
+      console.log(response)
+      userName.firstName = response[0].professor_first_name;
+      userName.lastName = response[0].professor_last_name;
+      return response;
+    })
+    .error(function(){
+      return {err:"err"}
+    })
+  }
+
+  function getUserName(){
+    return userName;
   }
 
   function login(loginInformation){
@@ -75,10 +123,16 @@ app.factory('services',['$q','$http',function($q,$http){
     });
   }
 
+  function sendAnnoucement(announcement){
+    announcement.class = getClass();
+   $http.post('/send/announcement',announcement) 
+  }
+
 
   function getInformation(){
     return $http.get("getUserData")
     .success(function(data){
+      console.log(data);
       return data;
     })
     .error(function(err){

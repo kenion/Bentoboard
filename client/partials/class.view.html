@@ -1,0 +1,18 @@
+<p>Class</p>
+
+<p>{{name.firstName}} {{name.lastName}}</p>
+
+<div>
+  <ul>
+    <li ng-repeat = "class in classes" ng-click = "classRoute(class)">{{class.name}}</li>
+  </ul>
+</div>
+
+<div ng-if = "userData.professor_id !== null">
+  <form  ng-submit= "commitAnnouncement(announcement)">
+    <input type="text" ng-model = "announcement.subject">
+    <textarea cols="30" rows="10" ng-model = "announcement.body"></textarea>
+    <input type= "submit">
+  </form>
+</div>
+

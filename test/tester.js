@@ -5,7 +5,7 @@ describe("BentoBoard account system",function(){
   it("Sign in",function(done){
     request
     .post("http://localhost:3000/signup")
-    .send({username: "john.nguyen",password: "pass", firstName: "John", lastName: "Nguyen"})
+    .send({username: "tup12346",password: "pass", firstName: "Lynn", lastName: "Dia"})
     .end(function(err,res){
       expect(res.statusCode).to.equal(200);
       done();
@@ -15,7 +15,7 @@ describe("BentoBoard account system",function(){
   it("Log in",function(done){
     request
     .post("http://localhost:3000/login")
-    .send({username: "john.nguyen",password: "pass"})
+    .send({username: "tup12346",password: "pass"})
     .end(function(err,res){
       expect(res.statusCode).to.equal(200);
       done();

@@ -6,6 +6,8 @@ var routes = require("./config/routes");
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
 
 var session  = require('express-session');
 var cookieParser = require('cookie-parser');
@@ -30,8 +32,8 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 //Connect routes to server
-routes.connect(app,dbConnection,passport);
+routes.connect(app,dbConnection,passport,io);
 
 
 
-app.listen(3000);
+http.listen(3000);

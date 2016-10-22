@@ -1,4 +1,18 @@
 <p>Profile</p>
+<p>{{name.firstName}} {{name.lastName}}</p>
 
-<p ng-if = "userData.data.student_id !== null">Student</p>
-<p ng-if = "userData.data.professor_id !== null" class = "ng-cloak">professor</p>
+<div>
+  <ul>
+    <li ng-repeat = "class in classes" ng-click = "classRoute(class)">{{class.name}}</li>
+  </ul>
+</div>
+
+<div>
+  <ul>
+    <li ng-repeat = "announcement in announcements track by $index" >{{announcement}}</li>
+  </ul>
+</div>
+
+
+<p ng-if = "userData.student_id !== null">Student</p>
+<p ng-if = "userData.professor_id !== null">Professor</p>

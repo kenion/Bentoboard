@@ -56,8 +56,8 @@ module.exports.connect = function(passport,dbConnection) {
                         password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
                     };
 
-                    var insertQuery = "INSERT INTO account (username, password,student_id) values (?,?,?)";
-                    dbConnection.query("INSERT INTO student (student_first_name,student_last_name) values (?,?)",[req.body.firstName,req.body.lastName],function(err,data){
+                    var insertQuery = "INSERT INTO account (username, password,professor_id) values (?,?,?)";
+                    dbConnection.query("INSERT INTO professor (professor_first_name,professor_last_name) values (?,?)",[req.body.firstName,req.body.lastName],function(err,data){
                         if(err){
                             return done(err);
                         }

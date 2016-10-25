@@ -19,12 +19,15 @@
 
 
   <div id = "announcements">
-    <span>Announcements</span>
+    <p id = "announcement-title">Announcements</p>
 
     <div id= "announcement-container">
       
       <ul>
-        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: classID track by $index" ng-click = "showDetailModal(announcement)" >{{announcement.subject}} {{announcement.name}}</li>
+        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: classID track by $index" ng-click = "showDetailModal(announcement)">
+          <span style = "text-align: left;">{{announcement.subject}}</span> 
+          <span class= "announcement-class-name">{{announcement.name}}</span>
+        </li>
       </ul>
 
     </div>

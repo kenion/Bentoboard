@@ -41,6 +41,7 @@ nav .nav-right{
 nav .logout{
   margin-left: 65%;
   color: #162b41;
+  cursor: pointer;
 }
 nav .main-title{
   clear: both;
@@ -74,23 +75,32 @@ nav .main-title span{
 #announcements{
   margin-left: 20%;
   margin-top:2%;
-  text-align: center;
+  
   background-color: #66cc99;
-  width: 30%;
-  padding-left: 0px;
+  width: 35%;
   color: white; 
 }
 
 ul{
   list-style: none;
+  width: 90%;
+  padding-left: 6.5vh;
+}
+li{
+  padding: 10px;
 }
 
-#announcements span{
+
+#announcements #announcement-title{
+  text-align: center;
   font-size: 150%;
   font-weight: 600;
 
 }
 
+.announcement-class-name{
+  float: right;
+}
 .announcements-list{
   background-color: #162b41;
   border-bottom: solid 1px #66cc99;
@@ -105,4 +115,5 @@ ul{
   background-color: #ff7978;
   color:white;
   font-size: 200%;
+  text-align: center;
 }

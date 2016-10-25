@@ -1,18 +1,37 @@
-<p>Profile</p>
-<p>{{name.firstName}} {{name.lastName}}</p>
+<div id = "profile-background">  
+  <nav>
+    <img src="../images/bento.png" id = "logo">
+    <strong class ="main-title" >Bento<span>Board</span></strong>
 
-<div>
-  <ul>
-    <li ng-repeat = "class in classes" ng-click = "classRoute(class)">{{class.name}}</li>
-  </ul>
+    <div class = "nav-right">
+      <span>Welcome, {{name.firstName}} {{name.lastName}}</span>
+      <br>
+      <span class = "logout" ng-click = "logout()">Logout</span>
+    </div>
+    
+  </nav>
+  
+  <div class= "nav-side-left">
+    <div class = "class-tab " ng-repeat = "class in classes" ng-click = "classFilter(class)">{{class.name}}</div>
+    <div class = "class-tab" ng-click = "showAll()">Show All</div>
+  </div>
+
+
+
+  <div id = "announcements">
+    <span>Announcements</span>
+
+    <div id= "announcement-container">
+      
+      <ul>
+        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: classID track by $index" ng-click = "showDetailModal(announcement)" >{{announcement.subject}} {{announcement.name}}</li>
+      </ul>
+
+    </div>
+    <div id = "add" ng-if = "classID !== undefined && userData.professor_id == null" ng-click = "showModal()">+</div>
+
+  </div>
 </div>
 
-<div>
-  <ul>
-    <li ng-repeat = "announcement in announcements track by $index" >{{announcement}}</li>
-  </ul>
-</div>
 
 
-<p ng-if = "userData.student_id !== null">Student</p>
-<p ng-if = "userData.professor_id !== null">Professor</p>

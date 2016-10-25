@@ -1,6 +1,20 @@
-<p>Bento Board</p>
-<form ng-submit = "login()">
-  <input type="text" ng-model = "loginValue.username" placeholder = "username">
-  <input type="password" ng-model = "loginValue.password" placeholder = "password">
-  <input type="submit" value = "Login">
-</form>
+<div id = "login-background">
+  <div id = "login">
+    <center><img src="../images/bento.png" id = "login-logo"></center>
+    <br>
+    <h1 id = "login-title">Bento<span>Board</span> </h1>
+    <br>
+    <center> <strong style = "font-size = 20px;">Flat Virtual Learning Environment</strong> </center>
+    <form ng-submit = "login()" id = "login-form">
+      <div class="form-group">
+        <h5 class = "form-text">Username:</h5>
+        <input type="text" class ="form-box form-control" ng-model = "loginValue.username" placeholder = "username">
+      </div>
+      <div class="form-group">
+        <h5 class = "form-text" >Password:</h5>
+        <input type="password" ng-model = "loginValue.password" placeholder = "password" class ="form-box form-control">
+      </div>
+      <input id = "login-button" type="submit" value = "Login" class="btn btn-danger">
+    </form>
+  </div>
+</div>

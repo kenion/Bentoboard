@@ -1,4 +1,8 @@
-var app = angular.module("app",['ngRoute']);
+var app = angular.module("app",['ngRoute', 'angular-loading-bar','angularModalService'])
+.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+     cfpLoadingBarProvider.includeSpinner = true;
+     cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';      
+  }])
 
 app.config(function ($routeProvider) {
   $routeProvider
@@ -12,11 +16,12 @@ app.config(function ($routeProvider) {
     controller: 'profileController',
     access: {restricted: true}
   })
-  .when('/class',{
+  .when('/class/:class_id',{
     templateUrl: '/partials/class.view.html',
     controller: 'classController',
     access: {restricted: true}
   })
+  .otherwise({redirectTo:'/'})
 })
 
 app.run(function ($rootScope, $location, $route, services) {

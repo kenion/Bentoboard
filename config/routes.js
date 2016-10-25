@@ -79,10 +79,38 @@ io.on("connection",function(socketConnection){
   })
 
   app.post("/send/announcement",function(req,res){
-    console.log(req.body)
-    io.emit("1",req.body);
 
-    res.end();
+    dbConnection.query("INSERT into announcements (subject,body,class_id) values (?,?,?)",
+      [req.body.subject,req.body.body,req.body.class_id],function(err){
+        if(err){
+          throw err;
+          res.end();
+        }
+        else{
+          io.emit("1",req.body);
+          res.end();
+        }
+      })
+  })
+
+  app.get('/logout', function(req, res) {
+    req.logout();
+
+    res.status(200).json({
+        status: 'Bye!'
+      });
+  });
+
+  app.get("/get/announcements",function(req,res){
+    dbConnection.query("SELECT c.class_id, c.name, a.subject, a.body FROM announcements a INNER JOIN class c on c.class_id = a.class_id",function(err,data){
+      if(err){
+        throw err;
+        res.end();
+      }
+      else{
+        res.json(data);
+      }
+    });
   })
 
 }

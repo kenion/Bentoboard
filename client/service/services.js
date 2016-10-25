@@ -4,7 +4,8 @@ app.factory('services',['$q','$http',function($q,$http){
   var user = null;
   var userData = {};
   var userName = {};
-  var classInfo = {};
+  var selectedClass = {};
+  var announcement = {};
 
   return({
     isLoggedIn: isLoggedIn,
@@ -17,10 +18,20 @@ app.factory('services',['$q','$http',function($q,$http){
     getUserName: getUserName,
     getClass: getClass,
     setClass: setClass,
-    sendAnnoucement: sendAnnoucement
+    sendAnnoucement: sendAnnoucement,
+    getAnnoucements: getAnnoucements,
+    setAnnouncement: setAnnouncement,
+    getAnnouncement: getAnnouncement
   })
 
 
+  function setAnnouncement(response){
+    announcement = response;
+  }
+
+  function getAnnouncement(){
+    return announcement;
+  }
 
   function isLoggedIn(){
     if(user){
@@ -44,12 +55,12 @@ app.factory('services',['$q','$http',function($q,$http){
     })
   }
 
-  function setClass(classID){
-    classInfo = classID;
+  function setClass(classData){
+    selectedClass = classData;
   }
 
   function getClass(){
-    return classInfo;
+    return selectedClass;
   }
 
   function getProfessorClass(){
@@ -124,8 +135,21 @@ app.factory('services',['$q','$http',function($q,$http){
   }
 
   function sendAnnoucement(announcement){
-    announcement.class = getClass();
-   $http.post('/send/announcement',announcement) 
+    var classInfo = getClass();
+    announcement.name = classInfo.name;
+    announcement.class_id = classInfo.class_id;
+    $http.post('/send/announcement',announcement); 
+
+  }
+
+  function getAnnoucements(){
+    return $http.get("get/announcements")
+    .success(function(data){;
+      return data;
+    })
+    .error(function(){
+
+    })
   }
 
 

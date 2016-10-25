@@ -5,9 +5,8 @@ app.factory("socket",function(){
     return socket
 })
 
-app.controller('classController', ['$scope','services','$route','socket', function($scope,services,$route){
+app.controller('classController', ['$scope','services','$location','socket', '$routeParams', function($scope,services,$location,socket,$routeParams){
   var socket= io();
-  var announcement = {};
   
   services.getInformation()
   .then(function(data){
@@ -40,8 +39,8 @@ app.controller('classController', ['$scope','services','$route','socket', functi
   }
 
   $scope.classRoute = function(classData){
-    services.setClass(classData);
-    $route.reload();
+    $location.path('/class/'+classData.class_id)
   }
+  services.setClass($routeParams.class_id);
   console.log(services.getClass());
 }])

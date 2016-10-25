@@ -1,0 +1,21 @@
+{
+  "name": "bento",
+  "homepage": "https://github.com/kenion/Bentoboard",
+  "authors": [
+    "chethtra yen <chethtra_yen@rocketmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-modal-service": "^0.10.1"
+  }
+}

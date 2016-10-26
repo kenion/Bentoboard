@@ -39,7 +39,7 @@ nav .nav-right{
 }
 
 nav .logout{
-  margin-left: 65%;
+  margin-left: 62%;
   color: #162b41;
   cursor: pointer;
 }
@@ -61,14 +61,26 @@ nav .main-title span{
 
 }
 
-.nav-side-left .class-tab{
+
+.nav-side-left .class-tab-selected{
   text-align: center;
   padding: 20px;
   border-bottom: solid 3px #66cc99;
   cursor: pointer;
   color: white;
-  background-color: #162b41;
   font-weight: 600;
+  background-color: #ff7978;
+  color: #162b41;
+}
+
+.nav-side-left .class-tab-not-selected{
+  text-align: center;
+  padding: 20px;
+  border-bottom: solid 3px #66cc99;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  background-color: #162b41;
 }
 
 

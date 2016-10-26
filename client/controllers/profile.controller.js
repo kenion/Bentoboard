@@ -7,6 +7,29 @@ app.factory("socket",function(){
 
 app.controller('profileController', ['$scope','services','$location','socket','$timeout','ModalService', function($scope, services,$location,socket,$timeout,ModalService){
   
+  $scope.announcements = [];
+  $scope.showTab = "class-tab-selected";
+
+  $scope.classChange = function(index){
+    for(var i = 0; i < $scope.classes.length; i++){
+      $scope.classes[i].style = "class-tab-not-selected"
+    }
+    $scope.showTab = "class-tab-not-selected";
+
+    if(index === -1){
+      $scope.showTab = "class-tab-selected";
+    }
+    else{
+      $scope.classes[index].style = "class-tab-selected";
+    }
+  }
+
+  var compare = function(a,b){
+    if(a.date > b.date){
+      return-1;
+    }
+  }
+
   $scope.showModal = function(){
     ModalService.showModal({
         templateUrl: "./partials/addAnnoucement.modal.view.html",
@@ -18,7 +41,10 @@ app.controller('profileController', ['$scope','services','$location','socket','$
         services.setClass($scope.selectedClass);
         modal.close.then(function(result) { 
           if(result !== 'cancel'){
+            var date = new Date();
+            result.date = date.getTime();
             services.sendAnnoucement(result);
+            $scope.announcements.unshift(result);
           }
         });
       });
@@ -36,10 +62,22 @@ app.controller('profileController', ['$scope','services','$location','socket','$
         services.setClass($scope.selectedClass);
         modal.close.then(function(result) { 
           if(result !== 'cancel'){
-            services.sendAnnoucement(result);
-          }
+            services.deleteAnnouncement(announcement)
+            .then(function(){
+              $scope.announcements.splice(findAnnouncement(announcement),1);
+            })
+            }
         });
       });
+  }
+
+  var findAnnouncement = function(object){
+    for(var i = 0; i < $scope.announcements.length; i++){
+      if(JSON.stringify($scope.announcements[i]) === JSON.stringify(object)){
+
+        return i;
+      }
+    }
   }
 
   $scope.logout = function(){
@@ -48,11 +86,6 @@ app.controller('profileController', ['$scope','services','$location','socket','$
       $location.path('/');
     })
   }
-
-
- 
-
-  $scope.announcements = [];
 
   var filterClass = function(data){
     var array = $scope.classes.filter(function(studentClass){
@@ -75,6 +108,7 @@ app.controller('profileController', ['$scope','services','$location','socket','$
           }
         }
       }
+      $scope.announcements.sort(compare);
     })
     .catch(function(){
 
@@ -82,13 +116,23 @@ app.controller('profileController', ['$scope','services','$location','socket','$
   }
 
 
-
-
-
   $scope.classFilter = function(classData){
-    $scope.classID = classData.class_id;
+    $scope.classID = classData.class_id
     $scope.selectedClass = classData;
   }
+
+  $scope.criteriaMatch = function() {
+    if($scope.classID !== undefined){
+      return function( item ){
+        return $scope.classID === item.class_id;
+      }
+    }
+    else{
+      return function(item){
+        return true;
+      }
+    }
+  };
 
   $scope.showAll = function(){
     $scope.classID = undefined;
@@ -116,6 +160,7 @@ app.controller('profileController', ['$scope','services','$location','socket','$
         getAnnouncements();
       })
       .catch(function(){
+        $location.path("/");
 
       })
     }
@@ -130,7 +175,7 @@ app.controller('profileController', ['$scope','services','$location','socket','$
         getAnnouncements();
       })
       .catch(function(){
-
+          $location.path("/");
       })
     }
   });
@@ -143,8 +188,14 @@ app.controller('profileController', ['$scope','services','$location','socket','$
       });
     }
   })
-  
 
-  
+  socket.on("2",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        $scope.announcements.splice(findAnnouncement(data),1);
+      });
+    }
+  })
 
 }])

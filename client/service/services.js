@@ -6,6 +6,7 @@ app.factory('services',['$q','$http',function($q,$http){
   var userName = {};
   var selectedClass = {};
   var announcement = {};
+  var type;
 
   return({
     isLoggedIn: isLoggedIn,
@@ -21,7 +22,9 @@ app.factory('services',['$q','$http',function($q,$http){
     sendAnnoucement: sendAnnoucement,
     getAnnoucements: getAnnoucements,
     setAnnouncement: setAnnouncement,
-    getAnnouncement: getAnnouncement
+    getAnnouncement: getAnnouncement,
+    getUserType: getUserType,
+    deleteAnnouncement: deleteAnnouncement
   })
 
 
@@ -48,6 +51,7 @@ app.factory('services',['$q','$http',function($q,$http){
       console.log(response)
       userName.firstName = response[0].student_first_name;
       userName.lastName = response[0].student_last_name;
+      type = "student";
       return response;
     })
     .error(function(){
@@ -63,12 +67,17 @@ app.factory('services',['$q','$http',function($q,$http){
     return selectedClass;
   }
 
+  function getUserType(){
+    return type;
+  }
+
   function getProfessorClass(){
     return $http.get("professor/class")
     .success(function(response){
       console.log(response)
       userName.firstName = response[0].professor_first_name;
       userName.lastName = response[0].professor_last_name;
+      type = "professor";
       return response;
     })
     .error(function(){
@@ -150,6 +159,11 @@ app.factory('services',['$q','$http',function($q,$http){
     .error(function(){
 
     })
+  }
+
+  function deleteAnnouncement(data){
+    console.log(data);
+    return $http.post("delete/announcement",data);
   }
 
 

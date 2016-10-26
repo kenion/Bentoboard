@@ -12,8 +12,9 @@
   </nav>
   
   <div class= "nav-side-left">
-    <div class = "class-tab " ng-repeat = "class in classes" ng-click = "classFilter(class)">{{class.name}}</div>
-    <div class = "class-tab" ng-click = "showAll()">Show All</div>
+    <div  class = "class-tab"ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)"
+    ng-class = "class.style">{{class.name}}</div>
+    <div  class = "class-tab" ng-class = "showTab" ng-click = "showAll(); classChange(-1)">Show All</div>
   </div>
 
 
@@ -24,14 +25,14 @@
     <div id= "announcement-container">
       
       <ul>
-        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: classID track by $index" ng-click = "showDetailModal(announcement)">
+        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
           <span style = "text-align: left;">{{announcement.subject}}</span> 
           <span class= "announcement-class-name">{{announcement.name}}</span>
         </li>
       </ul>
 
     </div>
-    <div id = "add" ng-if = "classID !== undefined && userData.professor_id == null" ng-click = "showModal()">+</div>
+    <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
 
   </div>
 </div>

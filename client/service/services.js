@@ -1,6 +1,6 @@
 var app = angular.module("app");
 
-app.factory('services',['$q','$http',function($q,$http){
+app.service('services',['$q','$http',function($q,$http){
   var user = null;
   var userData = {};
   var userName = {};

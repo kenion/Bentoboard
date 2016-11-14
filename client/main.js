@@ -16,11 +16,6 @@ app.config(function ($routeProvider) {
     controller: 'profileController',
     access: {restricted: true}
   })
-  .when('/class/:class_id',{
-    templateUrl: '/partials/class.view.html',
-    controller: 'classController',
-    access: {restricted: true}
-  })
   .otherwise({redirectTo:'/'})
 })
 

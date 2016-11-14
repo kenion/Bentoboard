@@ -5,10 +5,13 @@ app.factory("socket",function(){
     return socket
 })
 
-app.controller('profileController', ['$scope','services','$location','socket','$timeout','ModalService', function($scope, services,$location,socket,$timeout,ModalService){
+app.controller('profileController', ['$scope','services','$location','socket','$timeout','ModalService',
+  function($scope, services,$location,socket,$timeout,ModalService){
   
   $scope.announcements = [];
   $scope.showTab = "class-tab-selected";
+
+
 
   $scope.classChange = function(index){
     for(var i = 0; i < $scope.classes.length; i++){
@@ -87,6 +90,7 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     })
   }
 
+  //get classes assign to user
   var filterClass = function(data){
     var array = $scope.classes.filter(function(studentClass){
         return studentClass.class_id === data.class_id;
@@ -96,6 +100,7 @@ app.controller('profileController', ['$scope','services','$location','socket','$
   }
 
 
+  //get announcements
   var getAnnouncements = function(){
     services.getAnnoucements()
     .then(function(result){
@@ -116,11 +121,14 @@ app.controller('profileController', ['$scope','services','$location','socket','$
   }
 
 
+  //assign class that been clicked on
+  //Support function for criteriaMatch
   $scope.classFilter = function(classData){
     $scope.classID = classData.class_id
     $scope.selectedClass = classData;
   }
 
+  //filter class from tabs
   $scope.criteriaMatch = function() {
     if($scope.classID !== undefined){
       return function( item ){
@@ -134,11 +142,13 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     }
   };
 
+  //reverse class filter 
   $scope.showAll = function(){
     $scope.classID = undefined;
   }
 
 
+  //loading Screen
   var loading_screen = pleaseWait({
     logo: "../images/bento.png",
     backgroundColor: '#D1D5D8',

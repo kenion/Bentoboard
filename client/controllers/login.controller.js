@@ -2,7 +2,7 @@ var app = angular.module("app");
 
 
 
-app.controller('loginController', ['$scope','services','$location', function($scope,services,$location){
+app.controller('loginController', ['$scope','userService','$location', function($scope,userService,$location){
 
   $scope.login = function () {
 
@@ -10,7 +10,7 @@ app.controller('loginController', ['$scope','services','$location', function($sc
     $scope.error = false;
     $scope.disabled = true;
     // call login from service
-    services.login($scope.loginValue)
+    userService.login($scope.loginValue)
       // handle success
       .then(function () {
         $location.path('/profile');

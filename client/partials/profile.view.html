@@ -1,41 +1,94 @@
-<div id = "profile-background">  
-  <nav>
-    <img src="../images/bento.png" id = "logo">
-    <strong class ="main-title" >Bento<span>Board</span></strong>
-
-    <div class = "nav-right">
-      <span>Welcome, {{name.firstName}} {{name.lastName}}</span>
-      <br>
-      <span class = "logout" ng-click = "logout()">Logout</span>
-    </div>
-    
-  </nav>
-  
-  <div class= "nav-side-left">
-    <div  class = "class-tab"ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)"
-    ng-class = "class.style">{{class.name}}</div>
-    <div  class = "class-tab" ng-class = "showTab" ng-click = "showAll(); classChange(-1)">Show All</div>
-  </div>
-
-
-
-  <div id = "announcements">
-    <p id = "announcement-title">Announcements</p>
-
-    <div id= "announcement-container">
+<div class="container-fluid profile-background" >
+  <div  class="row">
+    <div class="col-sm-3 col-lg-2">
+      <nav class="navbar navbar-default navbar-fixed-side">
       
-      <ul>
-        <li class = "announcements-list" ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
-          <span style = "text-align: left;">{{announcement.subject}}</span> 
-          <span class= "announcement-class-name">{{announcement.name}}</span>
-        </li>
-      </ul>
+          <div class="navbar-header">
+            <strong class="navbar-brand" id= "nav-header">BentoBoard</strong>
+          </div>
 
+          <ul id = "nav-body">
+            <li id = "nav-user"> Welcome, {{name.firstName}} {{name.lastName}}</li>
+            <li  ng-click = "logout()" style = "cursor: pointer;">Logout <br> <br></li>
+            <li><h4>Classes</h4></li>
+            <li  class = "nav-content" ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)" style = "cursor: pointer;">{{class.name}}
+            </li>
+
+            <li class = "nav-content" ng-click = "showAll(); classChange(-1)" style = "cursor: pointer; list-style: none;">Show All</li>
+          </ul>
+
+      </nav>
     </div>
-    <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+  
 
+    <div class = "col-sm-9 col-lg-10">
+      <div class="container">
+        <div class = "row-fluid">
+
+          <div class=" col-sm-7 col-lg-5 tab-top" >
+              <h3 class ="tab-header" > <span class = "glyphicon glyphicon-bullhorn tab-icon"></span> ANNOUNCEMENTS</h3>
+              <div id = "tab-announcement" class ="tab-body">
+              <ul>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
+                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                  <br> 
+                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <hr>
+                </li>
+              </ul>
+            </div>
+            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+          </div>
+
+          <div class=" col-sm-7 col-lg-5 tab-top" >
+              <h3 class ="tab-header"  > <span class = "glyphicon glyphicon-folder-open tab-icon"></span> CLASS CONTENT</h3>
+              <div id = "tab-content" class ="tab-body">
+              <ul>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
+                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                  <br> 
+                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <hr>
+                </li>
+              </ul>
+            </div>
+            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+          </div>
+
+          <div class=" col-sm-7 col-lg-5 tab-top" >
+              <h3 class ="tab-header" > <span class = "glyphicon glyphicon-pencil tab-icon"></span>ASSIGNMENTS</h3>
+              <div id = "tab-assignment" class ="tab-body">
+              <ul>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
+                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                  <br> 
+                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <hr>
+                </li>
+              </ul>
+            </div>
+            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+          </div>
+
+
+          <div class=" col-sm-7 col-lg-5 tab-top" >
+              <h3 class ="tab-header" > <span class = "glyphicon glyphicon-list-alt tab-icon"></span>GRADES</h3>
+              <div id = "tab-grade" class ="tab-body">
+              <ul>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
+                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                  <br> 
+                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <hr>
+                </li>
+              </ul>
+            </div>
+            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-
-

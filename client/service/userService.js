@@ -1,11 +1,10 @@
 var app = angular.module("app");
 
-app.service('services',['$q','$http',function($q,$http){
+app.service('userService',['$q','$http',function($q,$http){
   var user = null;
   var userData = {};
   var userName = {};
   var selectedClass = {};
-  var announcement = {};
   var type;
 
   return({
@@ -19,32 +18,12 @@ app.service('services',['$q','$http',function($q,$http){
     getUserName: getUserName,
     getClass: getClass,
     setClass: setClass,
-    sendAnnoucement: sendAnnoucement,
-    getAnnoucements: getAnnoucements,
-    setAnnouncement: setAnnouncement,
-    getAnnouncement: getAnnouncement,
-    getUserType: getUserType,
-    deleteAnnouncement: deleteAnnouncement
+    getUserType: getUserType
   })
 
+  
 
-  function setAnnouncement(response){
-    announcement = response;
-  }
-
-  function getAnnouncement(){
-    return announcement;
-  }
-
-  function isLoggedIn(){
-    if(user){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
+  //----------------------------------------------------------class function ----------------------------------
   function getStudentClass(){
     return $http.get("student/class")
     .success(function(response){
@@ -67,10 +46,6 @@ app.service('services',['$q','$http',function($q,$http){
     return selectedClass;
   }
 
-  function getUserType(){
-    return type;
-  }
-
   function getProfessorClass(){
     return $http.get("professor/class")
     .success(function(response){
@@ -85,10 +60,7 @@ app.service('services',['$q','$http',function($q,$http){
     })
   }
 
-  function getUserName(){
-    return userName;
-  }
-
+  //----------------------------------------------------------user-related function----------------------------------
   function login(loginInformation){
     var deferred = $q.defer();
 
@@ -128,6 +100,25 @@ app.service('services',['$q','$http',function($q,$http){
     return deferred.promise;
   }
 
+  function isLoggedIn(){
+    if(user){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+
+  //----------------------------------------------------------user function----------------------------------
+  function getUserType(){
+    return type;
+  }
+
+  function getUserName(){
+    return userName;
+  }
+
   function getUserStatus(){
     return $http.get('status')
     .success(function(data){
@@ -142,30 +133,6 @@ app.service('services',['$q','$http',function($q,$http){
       user = false;
     });
   }
-
-  function sendAnnoucement(announcement){
-    var classInfo = getClass();
-    announcement.name = classInfo.name;
-    announcement.class_id = classInfo.class_id;
-    $http.post('/send/announcement',announcement); 
-
-  }
-
-  function getAnnoucements(){
-    return $http.get("get/announcements")
-    .success(function(data){;
-      return data;
-    })
-    .error(function(){
-
-    })
-  }
-
-  function deleteAnnouncement(data){
-    console.log(data);
-    return $http.post("delete/announcement",data);
-  }
-
 
   function getInformation(){
     return $http.get("getUserData")

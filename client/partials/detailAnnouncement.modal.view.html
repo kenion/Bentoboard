@@ -1,19 +1,19 @@
 <div class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" ng-click="close('cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{{announcment.subject}}</h4>
-                 <span style = "opacity: 0.5;">{{announcment.name}}</span>
-              </div>
-              <div class="modal-body">
-                  <p>{{announcment.body}}</p>
-              </div>
-              <div class = "modal-footer">
-                <span style = "opacity: 0.5; float: left;">{{announcment.date|date:'medium'}}</span>
-                <button  ng-click="close('delete')" ng-if= "type === 'professor'"data-dismiss="modal" class = "btn btn-warning">Delete</button>
-                <button  ng-click="close('cancel')" data-dismiss="modal" class = "btn btn-danger">close</button>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close('cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{announcement.subject}}</h4>
+         <span style = "opacity: 0.5;">{{announcement.name}}</span>
+      </div>
+      <div class="modal-body">
+          <p>{{announcement.body}}</p>
+      </div>
+      <div class = "modal-footer">
+        <span style = "opacity: 0.5; float: left;">{{announcement.date|date:'medium'}}</span>
+        <button  ng-click="close('delete')" ng-if= "type === 'professor'"data-dismiss="modal" class = "btn btn-warning">Delete</button>
+        <button  ng-click="close('cancel')" data-dismiss="modal" class = "btn btn-danger">close</button>
+      </div>
+    </div>
+  </div>
+</div>

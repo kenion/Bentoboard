@@ -5,14 +5,23 @@ app.factory("socket",function(){
     return socket
 })
 
-app.controller('profileController', ['$scope','services','$location','socket','$timeout','ModalService',
-  function($scope, services,$location,socket,$timeout,ModalService){
+app.controller('profileController', ['$scope','userService','$location','socket','$timeout','ModalService','announcementService',
+  function($scope, userService,$location,socket,$timeout,ModalService,announcementService){
   
   $scope.announcements = [];
   $scope.showTab = "class-tab-selected";
 
+  //---------------------------------------------------------user function----------------------------------------------
+  //User log out
+  $scope.logout = function(){
+    userService.logout()
+    .then(function(){
+      $location.path('/');
+    })
+  }
 
 
+  //---------------------------------------------------------class function----------------------------------------------
   $scope.classChange = function(index){
     for(var i = 0; i < $scope.classes.length; i++){
       $scope.classes[i].style = "class-tab-not-selected"
@@ -27,69 +36,6 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     }
   }
 
-  var compare = function(a,b){
-    if(a.date > b.date){
-      return-1;
-    }
-  }
-
-  $scope.showModal = function(){
-    ModalService.showModal({
-        templateUrl: "./partials/addAnnoucement.modal.view.html",
-        controller: "addAnnouncement"
-      }).then(function(modal) {
-
-        //it's a bootstrap element, use 'modal' to show it
-        modal.element.modal();
-        services.setClass($scope.selectedClass);
-        modal.close.then(function(result) { 
-          if(result !== 'cancel'){
-            var date = new Date();
-            result.date = date.getTime();
-            services.sendAnnoucement(result);
-            $scope.announcements.unshift(result);
-          }
-        });
-      });
-  }
-
-  $scope.showDetailModal = function(announcement){
-    services.setAnnouncement(announcement);
-    ModalService.showModal({
-        templateUrl: "./partials/detailAnnouncement.modal.view.html",
-        controller: "detailAnnouncement"
-      }).then(function(modal) {
-
-        //it's a bootstrap element, use 'modal' to show it
-        modal.element.modal();
-        services.setClass($scope.selectedClass);
-        modal.close.then(function(result) { 
-          if(result !== 'cancel'){
-            services.deleteAnnouncement(announcement)
-            .then(function(){
-              $scope.announcements.splice(findAnnouncement(announcement),1);
-            })
-            }
-        });
-      });
-  }
-
-  var findAnnouncement = function(object){
-    for(var i = 0; i < $scope.announcements.length; i++){
-      if(JSON.stringify($scope.announcements[i]) === JSON.stringify(object)){
-
-        return i;
-      }
-    }
-  }
-
-  $scope.logout = function(){
-    services.logout()
-    .then(function(){
-      $location.path('/');
-    })
-  }
-
   //get classes assign to user
   var filterClass = function(data){
     var array = $scope.classes.filter(function(studentClass){
@@ -99,27 +45,16 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     return array;
   }
 
-
-  //get announcements
-  var getAnnouncements = function(){
-    services.getAnnoucements()
-    .then(function(result){
-      var data = result.data;
-      console.log(result);
-      for(var i = 0; i < $scope.classes.length; i++){
-        for(var j = 0; j < data.length; j++){
-          if(data[j].class_id === $scope.classes[i].class_id){
-            $scope.announcements.unshift(data[j]);
-          }
-        }
-      }
-      $scope.announcements.sort(compare);
-    })
-    .catch(function(){
-
-    })
+  //Clear class filter 
+  $scope.showAll = function(){
+    $scope.classID = undefined;
   }
 
+  var compare = function(a,b){
+    if(a.date > b.date){
+      return-1;
+    }
+  }
 
   //assign class that been clicked on
   //Support function for criteriaMatch
@@ -142,12 +77,82 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     }
   };
 
-  //reverse class filter 
-  $scope.showAll = function(){
-    $scope.classID = undefined;
+  //---------------------------------------------------------modal--------------------------------------------------
+  $scope.showModal = function(){
+    ModalService.showModal({
+        templateUrl: "./partials/addAnnoucement.modal.view.html",
+        controller: "addAnnouncement"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            var date = new Date();
+            result.date = date.getTime();
+            announcementService.sendAnnoucement(result);
+            $scope.announcements.unshift(result);
+          }
+        });
+      });
+  }
+
+  $scope.showDetailModal = function(announcement){
+    announcementService.setAnnouncement(announcement);
+    ModalService.showModal({
+        templateUrl: "./partials/detailAnnouncement.modal.view.html",
+        controller: "detailAnnouncement"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            announcementService.deleteAnnouncement(announcement)
+            .then(function(){
+              $scope.announcements.splice(findAnnouncement(announcement),1);
+            })
+            }
+        });
+      });
+  }
+
+ 
+  //---------------------------------------------------------announcement function----------------------------------------------
+  //get announcements
+  var getAnnouncements = function(){
+    announcementService.getAnnoucements()
+    .then(function(result){
+      var data = result.data;
+      console.log(result);
+      for(var i = 0; i < $scope.classes.length; i++){
+        for(var j = 0; j < data.length; j++){
+          if(data[j].class_id === $scope.classes[i].class_id){
+            $scope.announcements.unshift(data[j]);
+          }
+        }
+      }
+      $scope.announcements.sort(compare);
+    })
+    .catch(function(){
+
+    })
   }
 
 
+  //Compare announcement postiton in a collection
+  var findAnnouncement = function(object){
+    for(var i = 0; i < $scope.announcements.length; i++){
+      if(JSON.stringify($scope.announcements[i]) === JSON.stringify(object)){
+        return i;
+      }
+    }
+  }
+
+
+  //---------------------------------------------------------loading screen--------------------------------------------
   //loading Screen
   var loading_screen = pleaseWait({
     logo: "../images/bento.png",
@@ -155,41 +160,11 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     loadingHtml: '<div class="sk-folding-cube"><div class="sk-cube1 sk-cube"></div><div class="sk-cube2 sk-cube"></div><div class="sk-cube4 sk-cube"></div><div class="sk-cube3 sk-cube"></div></div>'
   });
 
-  services.getInformation()
-  .then(function(data){
-    $scope.userData = data.data;
-    //For Student
-    if($scope.userData.student_id !== null){
-      services.getStudentClass()
-      .then(function(classData){
-        $scope.classes = classData.data;
-        $scope.name = services.getUserName();
-        $timeout(function(){
-          loading_screen.finish();
-        },1000)
-        getAnnouncements();
-      })
-      .catch(function(){
-        $location.path("/");
 
-      })
-    }
-    else{
-      services.getProfessorClass()
-      .then(function(classData){
-        $scope.classes = classData.data;
-        $scope.name = services.getUserName();
-        $timeout(function(){
-          loading_screen.finish();
-        },1000)
-        getAnnouncements();
-      })
-      .catch(function(){
-          $location.path("/");
-      })
-    }
-  });
 
+  
+  //---------------------------------------------------------sockets--------------------------------------------------
+  //socket: Adding anouncement 
   socket.on("1",function(data){
     var classResult = filterClass(data);
     if($scope.userData.student_id !== null && classResult.length > 0){
@@ -199,6 +174,9 @@ app.controller('profileController', ['$scope','services','$location','socket','$
     }
   })
 
+
+
+  //socket: deleting anouncement 
   socket.on("2",function(data){
     var classResult = filterClass(data);
     if($scope.userData.student_id !== null && classResult.length > 0){
@@ -207,5 +185,49 @@ app.controller('profileController', ['$scope','services','$location','socket','$
       });
     }
   })
+
+
+//---------------------------------------------------------init function--------------------------------------------------
+  //Initilzation function after logging in 
+  var init = function(){
+    userService.getInformation()
+    .then(function(data){
+      $scope.userData = data.data;
+      //For Student
+      if($scope.userData.student_id !== null){
+        userService.getStudentClass()
+        .then(function(classData){
+          $scope.classes = classData.data;
+          $scope.name = userService.getUserName();
+          $timeout(function(){
+            loading_screen.finish();
+          },1000)
+          getAnnouncements();
+        })
+        .catch(function(){
+          $location.path("/");
+
+        })
+      }
+      else{
+        userService.getProfessorClass()
+        .then(function(classData){
+          $scope.classes = classData.data;
+          $scope.name = userService.getUserName();
+          $timeout(function(){
+            loading_screen.finish();
+          },1000)
+          getAnnouncements();
+        })
+        .catch(function(){
+            $location.path("/");
+        })
+      }
+    });
+  }
+
+
+  //Run init function
+  init();
 
 }])

@@ -19,16 +19,16 @@ app.config(function ($routeProvider) {
   .otherwise({redirectTo:'/'})
 })
 
-app.run(function ($rootScope, $location, $route, services) {
+app.run(function ($rootScope, $location, $route, userService) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
-      services.getUserStatus()
+      userService.getUserStatus()
       .then(function(){
-        if (next.access.restricted && !services.isLoggedIn()){
+        if (next.access.restricted && !userService.isLoggedIn()){
           $location.path('/');
           $route.reload();
         }
-        else if(services.isLoggedIn() && (next.originalPath === '/')){
+        else if(userService.isLoggedIn() && (next.originalPath === '/')){
           $location.path('/profile');
         }
       });

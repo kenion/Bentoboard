@@ -189,7 +189,24 @@ app.controller('profileController', ['$scope','userService','$location','socket'
 
 //---------------------------------------------------------init function--------------------------------------------------
   //Initilzation function after logging in 
+  
+  var getPartofDay = function(){
+    var d = new Date();
+    var time = d.getHours();
+    if(time >= 5 && time <= 12){
+      $scope.partOfDay = "Morning";
+    }
+    else if(time > 12 && time <= 17){
+      $scope.partOfDay = "Afternoon";
+    }
+    else{
+      $scope.partOfDay = "Evening";
+    }
+  }
+
+
   var init = function(){
+    getPartofDay();
     userService.getInformation()
     .then(function(data){
       $scope.userData = data.data;
@@ -225,6 +242,8 @@ app.controller('profileController', ['$scope','userService','$location','socket'
       }
     });
   }
+
+
 
 
   //Run init function

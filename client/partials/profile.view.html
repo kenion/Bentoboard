@@ -2,21 +2,35 @@
   <div  class="row">
     <div class="col-sm-3 col-lg-2">
       <nav class="navbar navbar-default navbar-fixed-side">
-      
-          <div class="navbar-header">
-            <strong class="navbar-brand" id= "nav-header">BentoBoard</strong>
+
+          <div class="navbar-header"> 
+            <strong class="navbar-brand" id= "nav-header">
+              <span class = "
+glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
           </div>
 
-          <ul id = "nav-body">
-            <li id = "nav-user"> Welcome, {{name.firstName}} {{name.lastName}}</li>
-            <li  ng-click = "logout()" style = "cursor: pointer;">Logout <br> <br></li>
-            <li><h4>Classes</h4></li>
-            <li  class = "nav-content" ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)" style = "cursor: pointer;">{{class.name}}
-            </li>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style = "padding: 0;">
+            
+            <ul id = "nav-body">
+              <li id = "nav-user"> Good {{partOfDay}}, &nbsp; {{name.firstName}} {{name.lastName}}</li>
+            
+              <li><h4>Your Courses</h4></li>
+              <li  class = "nav-content courses" ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)" style = "cursor: pointer;"
+              >{{class.name}}
+              </li>
+              <li class = "nav-content" id = "show"ng-click = "showAll(); classChange(-1)" style = "cursor: pointer; list-style: none;">Show All</li>
 
-            <li class = "nav-content" ng-click = "showAll(); classChange(-1)" style = "cursor: pointer; list-style: none;">Show All</li>
-          </ul>
+              <li id = "nav-logout" ng-click = "logout()" style = "cursor: pointer;"><span class = "glyphicon glyphicon-lock"></span>Logout <br> <br></li>
+            </ul>
 
+          </div>
       </nav>
     </div>
   

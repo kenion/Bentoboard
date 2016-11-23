@@ -1,0 +1,24 @@
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close('cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Add Content</h3>
+      </div>
+      <div class="modal-body">
+            <strong>Subject:</strong>
+            <input type="text" style = "min-width: 50%;" class="form-control" ng-model = "subject">
+            <br>
+            <br>
+            <strong>Body:</strong>
+            <textarea class="form-control" id="" cols="60" rows="10" ng-model = "body"></textarea>
+            <br>
+            <input type="file" file-model="myFile" /><br><br>
+      </div>
+      <div class = "modal-footer">
+        <span style = "margin-right: 35%;" class = "text-danger">{{error}}</span>
+        <button ng-click="uploadFile()" ng-disabled = "myFile == null || subject == null" class="btn btn-success" style = "color: black; font-style: bold;" data-dismiss="modal">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

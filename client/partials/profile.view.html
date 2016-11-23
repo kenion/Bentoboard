@@ -43,7 +43,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
               <h3 class ="tab-header" > <span class = "glyphicon glyphicon-bullhorn tab-icon"></span> ANNOUNCEMENTS</h3>
               <div id = "tab-announcement" class ="tab-body">
               <ul>
-                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showAnnoucementDetailModal(announcement)">
                   <span class = "tab-announcement-subject">{{announcement.subject}}</span>
                   <br> 
                   <span class = "tab-announcement-class">{{announcement.name}}</span>
@@ -51,22 +51,22 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addAnnouncementModal()">+</div>
           </div>
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
               <h3 class ="tab-header"  > <span class = "glyphicon glyphicon-folder-open tab-icon"></span> CLASS CONTENT</h3>
               <div id = "tab-content" class ="tab-body">
               <ul>
-                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
-                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "content in contents | filter: criteriaMatch(a) track by $index" ng-click = "showContentDetailModal(content)">
+                  <span class = "tab-announcement-subject">{{content.subject}}</span>
                   <br> 
-                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <span class = "tab-announcement-class">{{content.name}}</span>
                   <hr>
                 </li>
               </ul>
             </div>
-            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = " change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addContentModal()">+</div>
           </div>
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
@@ -81,7 +81,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
           </div>
 
 
@@ -97,7 +97,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div id = "add" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
           </div>
 
 

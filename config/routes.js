@@ -97,7 +97,7 @@ io.on("connection",function(socketConnection){
           res.end();
         }
         else{
-          io.emit("1",req.body);
+          io.emit("addAnnouncement",req.body);
           res.end();
         }
       })
@@ -114,7 +114,7 @@ io.on("connection",function(socketConnection){
           res.end();
         }
         else{
-          io.emit("2",banish);
+          io.emit("deleteAnnouncement",banish);
           res.end();
         }
       })

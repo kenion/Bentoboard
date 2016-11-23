@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="js/bower_components/bootstrap-side-navbar/source/assets/stylesheets/navbar-fixed-side.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Arvo">
 
   </head>
   <body ng-cloak>  
@@ -30,6 +29,7 @@
     <script src="./js/bower_components\angular-modal-service\dst\angular-modal-service.min.js"></script> 
     <script src = "./angular-socket-io-master/socket.js"></script>
     <script src= "./js/bower_components/jquery/dist/jquery.min.js"></script>
+     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 
 
 
@@ -37,10 +37,14 @@
     <script src="./main.js"></script>
     <script src="./service/userService.js"></script>
     <script src="./service/announcementService.js"></script>
+    <script src="./service/contentService.js"></script>
     <script src="./controllers/login.controller.js"></script>
     <script src = "./controllers/profile.controller.js"></script>
     <script src = "./controllers/addAnnouncement.modal.controller.js"></script>
-    <script src = "./controllers/detailAnnouncement.modal.controller.js"></script>
+    <script src = "./controllers/addAnnouncement.modal.controller.js"></script>
+    <script src = "./controllers/addContentModal.js"></script>
+    <script src = "./controllers/detailContentModal.js"></script>
+    <script src = "./js/fileDirective.js"></script>
 
     <div ng-view ></div>
 

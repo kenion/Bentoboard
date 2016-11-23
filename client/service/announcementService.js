@@ -2,7 +2,7 @@ var app  = angular.module("app");
 
 var announcement = {};
 
-app.service("announcementService",["$http",function($http){
+app.service("announcementService",["$http","userService",function($http,userService){
 
   return({
     sendAnnoucement: sendAnnoucement,
@@ -24,7 +24,7 @@ app.service("announcementService",["$http",function($http){
 
   //Add annoucement 
   function sendAnnoucement(announcement){
-    var classInfo = getClass();
+    var classInfo = userService.getClass();
     announcement.name = classInfo.name;
     announcement.class_id = classInfo.class_id;
     $http.post('/send/announcement',announcement); 

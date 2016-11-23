@@ -5,10 +5,12 @@ app.factory("socket",function(){
     return socket
 })
 
-app.controller('profileController', ['$scope','userService','$location','socket','$timeout','ModalService','announcementService',
-  function($scope, userService,$location,socket,$timeout,ModalService,announcementService){
+app.controller('profileController', ['$scope','userService','$location','socket','$timeout','ModalService','announcementService','contentService',
+  function($scope, userService,$location,socket,$timeout,ModalService,announcementService,contentService){
   
   $scope.announcements = [];
+  $scope.contents = [];
+
   $scope.showTab = "class-tab-selected";
 
   //---------------------------------------------------------user function----------------------------------------------
@@ -77,47 +79,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
     }
   };
 
-  //---------------------------------------------------------modal--------------------------------------------------
-  $scope.showModal = function(){
-    ModalService.showModal({
-        templateUrl: "./partials/addAnnoucement.modal.view.html",
-        controller: "addAnnouncement"
-      }).then(function(modal) {
-
-        //it's a bootstrap element, use 'modal' to show it
-        modal.element.modal();
-        userService.setClass($scope.selectedClass);
-        modal.close.then(function(result) { 
-          if(result !== 'cancel'){
-            var date = new Date();
-            result.date = date.getTime();
-            announcementService.sendAnnoucement(result);
-            $scope.announcements.unshift(result);
-          }
-        });
-      });
-  }
-
-  $scope.showDetailModal = function(announcement){
-    announcementService.setAnnouncement(announcement);
-    ModalService.showModal({
-        templateUrl: "./partials/detailAnnouncement.modal.view.html",
-        controller: "detailAnnouncement"
-      }).then(function(modal) {
-
-        //it's a bootstrap element, use 'modal' to show it
-        modal.element.modal();
-        userService.setClass($scope.selectedClass);
-        modal.close.then(function(result) { 
-          if(result !== 'cancel'){
-            announcementService.deleteAnnouncement(announcement)
-            .then(function(){
-              $scope.announcements.splice(findAnnouncement(announcement),1);
-            })
-            }
-        });
-      });
-  }
+  
 
  
   //---------------------------------------------------------announcement function----------------------------------------------
@@ -143,13 +105,182 @@ app.controller('profileController', ['$scope','userService','$location','socket'
 
 
   //Compare announcement postiton in a collection
-  var findAnnouncement = function(object){
-    for(var i = 0; i < $scope.announcements.length; i++){
-      if(JSON.stringify($scope.announcements[i]) === JSON.stringify(object)){
+  var findElement = function(object,target){
+    var targetArray = [];
+    if(target == "announcement"){
+      targetArray = $scope.announcements;
+    }
+    else if(target == "content"){
+      targetArray = $scope.contents;
+    }
+    for(var i = 0; i < targetArray.length; i++){
+      if(JSON.stringify(targetArray[i]) === JSON.stringify(object)){
         return i;
       }
     }
   }
+
+
+  //--------------------------------------------------------- announcement modals--------------------------------------------------
+  $scope.addAnnouncementModal = function(){
+    ModalService.showModal({
+        templateUrl: "./partials/addAnnoucement.modal.view.html",
+        controller: "addAnnouncement"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            var date = new Date();
+            result.date = date.getTime();
+            announcementService.sendAnnoucement(result);
+            $scope.announcements.unshift(result);
+          }
+        });
+      });
+  }
+
+  $scope.showAnnoucementDetailModal = function(announcement){
+    announcementService.setAnnouncement(announcement);
+    ModalService.showModal({
+        templateUrl: "./partials/detailAnnouncement.modal.view.html",
+        controller: "detailAnnouncement"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            announcementService.deleteAnnouncement(announcement)
+            .then(function(){
+              $scope.announcements.splice(findElement(announcement,"announcement"),1);
+            })
+            }
+        });
+      });
+  }
+
+
+  //--------------------------------------------------------- announcement sockets--------------------------------------------------
+  //socket: Adding announcement 
+  socket.on("addAnnouncement",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        $scope.announcements.unshift(data);
+      });
+    }
+  })
+
+
+
+  //socket: deleting anouncement 
+  socket.on("deleteAnnouncement",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        $scope.announcements.splice(findElement(data,"announcement"),1);
+      });
+    }
+  })
+
+
+
+
+
+
+  //---------------------------------------------------------content function----------------------------------------------
+  //get content
+  var getContents = function(){
+    contentService.getContents()
+    .then(function(result){
+      var data = result.data;
+      for(var i = 0; i < $scope.classes.length; i++){
+        for(var j = 0; j < data.length; j++){
+          if(data[j].class_id === $scope.classes[i].class_id){
+            $scope.contents.unshift(data[j]);
+          }
+        }
+      }
+      $scope.contents.sort(compare);
+    })
+    .catch(function(){
+
+    })
+  }
+
+
+  //--------------------------------------------------------- content modals--------------------------------------------------
+  var clearAndGetContent = function(){
+    $scope.contents.length = 0;
+    getContents();
+  }
+  $scope.addContentModal = function(){
+    userService.setClass($scope.selectedClass);
+    ModalService.showModal({
+        templateUrl: "./partials/addContentModal.html",
+        controller: "addContent"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            console.log(result);
+            $scope.contents.unshift(result);
+          }
+        });
+      });
+  }
+
+  $scope.showContentDetailModal = function(content){
+    contentService.setContent(content);
+    ModalService.showModal({
+        templateUrl: "./partials/detailContentModal.html",
+        controller: "detailContent"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            contentService.deleteContent(content)
+            .then(function(){
+              $scope.contents.splice(findElement(content,"content"),1);
+            })
+            }
+        });
+      });
+  }
+
+  //--------------------------------------------------------- content sockets--------------------------------------------------
+  socket.on("uploadContent",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        console.log(data)
+        $scope.contents.unshift(data);
+      });
+    }
+  })
+
+
+
+  //socket: deleting anouncement 
+  socket.on("deleteContent",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        $scope.contents.splice(findElement(data,"announcement"),1);
+      });
+    }
+  })
+
 
 
   //---------------------------------------------------------loading screen--------------------------------------------
@@ -163,28 +294,6 @@ app.controller('profileController', ['$scope','userService','$location','socket'
 
 
   
-  //---------------------------------------------------------sockets--------------------------------------------------
-  //socket: Adding anouncement 
-  socket.on("1",function(data){
-    var classResult = filterClass(data);
-    if($scope.userData.student_id !== null && classResult.length > 0){
-      $scope.$apply(function(){
-        $scope.announcements.unshift(data);
-      });
-    }
-  })
-
-
-
-  //socket: deleting anouncement 
-  socket.on("2",function(data){
-    var classResult = filterClass(data);
-    if($scope.userData.student_id !== null && classResult.length > 0){
-      $scope.$apply(function(){
-        $scope.announcements.splice(findAnnouncement(data),1);
-      });
-    }
-  })
 
 
 //---------------------------------------------------------init function--------------------------------------------------
@@ -220,6 +329,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
             loading_screen.finish();
           },1000)
           getAnnouncements();
+          getContents();
         })
         .catch(function(){
           $location.path("/");
@@ -235,6 +345,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
             loading_screen.finish();
           },1000)
           getAnnouncements();
+          getContents();
         })
         .catch(function(){
             $location.path("/");

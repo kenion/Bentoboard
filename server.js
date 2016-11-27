@@ -2,7 +2,8 @@
 var dbConnection = require("./config/mysqlConnection");
 //Import request routes from ./config/routes.js
 var routes = require("./config/routes");
-var contentRoutes = require("./config/contentRoutes")
+var contentRoutes = require("./config/contentRoutes");
+var assignmentRoutes = require("./config/assignmentRoutes");
 
 var express = require("express");
 var app = express();
@@ -47,5 +48,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 //Connect routes to server
 routes.connect(app,dbConnection,passport,io);
 contentRoutes.connect(app,dbConnection,passport,io,upload,fs);
+assignmentRoutes.connect(app,dbConnection,passport,io,upload,fs);
 
 http.listen(3000);

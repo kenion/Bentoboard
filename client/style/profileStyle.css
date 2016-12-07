@@ -5,6 +5,7 @@
 }
 
 
+
 nav{
   padding-bottom: 10px;
 }
@@ -71,11 +72,14 @@ nav{
 }
 
 .change{
-  position: static;
-  width: 100%;
-  background-color: red;
-  padding: 0;
-  margin: 0;
+   
+  background-color: #ecf0f1;
+  
+  
+}
+
+.plus{
+  color: #2c3e50;
 }
 
 
@@ -198,4 +202,11 @@ body::-webkit-scrollbar-thumb {
   background-color: rgba(236, 240, 241,0.9);
   outline: 1px solid slategrey;
 }
+
+
+.full{
+    width: 100%;
+}
+
+
 

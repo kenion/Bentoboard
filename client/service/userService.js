@@ -5,7 +5,8 @@ app.service('userService',['$q','$http',function($q,$http){
   var userData = {};
   var userName = {};
   var selectedClass = {};
-  var type;
+  var type = null;;
+  var professorID = null;
 
   return({
     isLoggedIn: isLoggedIn,
@@ -18,7 +19,9 @@ app.service('userService',['$q','$http',function($q,$http){
     getUserName: getUserName,
     getClass: getClass,
     setClass: setClass,
-    getUserType: getUserType
+    getUserType: getUserType,
+    setProfessorID: setProfessorID,
+    getProfessorID: getProfessorID
   })
 
   
@@ -143,6 +146,14 @@ app.service('userService',['$q','$http',function($q,$http){
     .error(function(err){
       throw err;
     })
+  }
+
+  function setProfessorID(id){
+    professorID = id;
+  } 
+
+  function getProfessorID(){
+    return professorID;
   }
 
 }])

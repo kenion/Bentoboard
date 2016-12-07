@@ -6,10 +6,11 @@ app.factory("socket",function(){
 })
 
 app.controller('profileController', ['$scope','userService','$location','socket','$timeout','ModalService','announcementService','contentService',
-  function($scope, userService,$location,socket,$timeout,ModalService,announcementService,contentService){
+  "assignmentService",function($scope, userService,$location,socket,$timeout,ModalService,announcementService,contentService,assignmentService){
   
   $scope.announcements = [];
   $scope.contents = [];
+  $scope.assignments = [];
 
   $scope.showTab = "class-tab-selected";
 
@@ -41,7 +42,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
   //get classes assign to user
   var filterClass = function(data){
     var array = $scope.classes.filter(function(studentClass){
-        return studentClass.class_id === data.class_id;
+        return studentClass.class_id == data.class_id;
     });
 
     return array;
@@ -112,6 +113,9 @@ app.controller('profileController', ['$scope','userService','$location','socket'
     }
     else if(target == "content"){
       targetArray = $scope.contents;
+    }
+    else if(target == "assignment"){
+      targetArray = $scope.assignments;
     }
     for(var i = 0; i < targetArray.length; i++){
       if(JSON.stringify(targetArray[i]) === JSON.stringify(object)){
@@ -276,13 +280,102 @@ app.controller('profileController', ['$scope','userService','$location','socket'
     var classResult = filterClass(data);
     if($scope.userData.student_id !== null && classResult.length > 0){
       $scope.$apply(function(){
-        $scope.contents.splice(findElement(data,"announcement"),1);
+        $scope.contents.splice(findElement(data,"content"),1);
       });
     }
   })
 
 
 
+
+  //---------------------------------------------------------assignment function----------------------------------------------
+
+  var getAssignment = function(id,target){
+    console.log(true)
+    if(target == "student"){
+      assignmentService.getStudentAssignment(id)
+      .then(function(result){
+        $scope.assignments = result.data.reverse();
+      })
+    }
+    else{
+      assignmentService.getProfessorAssignment(id)
+      .then(function(result){
+        console.log(result)
+        $scope.assignments = result.data.reverse();
+      })
+    }
+  }
+
+  //--------------------------------------------------------- assignment modals--------------------------------------------------
+  $scope.showAssignmentDetailModal = function(assignment){
+    assignmentService.setAssignment(assignment);
+    ModalService.showModal({
+        templateUrl: "./partials/detailAssignmentModal.html",
+        controller: "detailAssignment"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        userService.setClass($scope.selectedClass);
+        modal.close.then(function(result) { 
+          if(result !== 'cancel'){
+            assignmentService.deleteAssignment(assignment)
+            .then(function(){
+              $scope.assignments.splice(findElement(assignment,"assignment"),1);
+            })
+            }
+        });
+      });
+  }
+
+
+
+  $scope.addAssignmentModal = function(){
+    userService.setClass($scope.selectedClass);
+    ModalService.showModal({
+        templateUrl: "./partials/addAssignmentModal.html",
+        controller: "addAssignment"
+      }).then(function(modal) {
+
+        //it's a bootstrap element, use 'modal' to show it
+        modal.element.modal();
+        
+        modal.close.then(function(result) { 
+
+          if(result !== 'cancel'){
+            console.log(result);
+            $scope.assignments.unshift(result);
+          }
+        });
+      });
+  }
+
+
+  //--------------------------------------------------------- assignment sockets--------------------------------------------------
+  socket.on("uploadAssignment",function(data){
+    var classResult = filterClass(data);
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      $scope.$apply(function(){
+        console.log(data)
+        $scope.assignments.unshift(data);
+      });
+    }
+  })
+
+
+
+  //socket: deleting anouncement 
+  socket.on("deleteAssignment",function(data){
+    var classResult = filterClass(data);
+    console.log(data)
+    if($scope.userData.student_id !== null && classResult.length > 0){
+      console.log("hit")
+      $scope.$apply(function(){
+        $scope.assignments.splice(findElement(data,"assignment"),1);
+      });
+    }
+  })
   //---------------------------------------------------------loading screen--------------------------------------------
   //loading Screen
   var loading_screen = pleaseWait({
@@ -330,6 +423,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
           },1000)
           getAnnouncements();
           getContents();
+          getAssignment($scope.userData.student_id, "student");
         })
         .catch(function(){
           $location.path("/");
@@ -337,6 +431,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
         })
       }
       else{
+        userService.setProfessorID($scope.userData.professor_id);
         userService.getProfessorClass()
         .then(function(classData){
           $scope.classes = classData.data;
@@ -346,6 +441,7 @@ app.controller('profileController', ['$scope','userService','$location','socket'
           },1000)
           getAnnouncements();
           getContents();
+          getAssignment($scope.userData.professor_id, "professor");
         })
         .catch(function(){
             $location.path("/");

@@ -1,0 +1,24 @@
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close('cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{assignment.assignment_name}}</h4>
+         <span style = "opacity: 0.5;">{{assignment.name}}</span>
+      </div>
+      <div class="modal-body">
+          <p>{{assignment.body}}</p>
+
+      </div>
+
+      <div class = "modal-footer">
+        <span style = "opacity: 0.5; float: left;" ng-show = "assignment.file_name != null">File: {{assignment.file_name}}</span>
+        <br>
+        <span style = "opacity: 0.5; float: left;">{{assignment.date|date:'medium'}}</span>
+        <button  ng-click="close('delete')" ng-if= "type === 'professor'"data-dismiss="modal" class = "btn btn-warning">Delete</button>
+        <button ng-click = "download()" class = " btn btn-success" ng-show = "assignment.file_name != null"> Download</button>
+        <button  ng-click="close('cancel')" data-dismiss="modal" class = "btn btn-danger">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

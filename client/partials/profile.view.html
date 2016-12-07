@@ -9,7 +9,7 @@
 glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
 
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only" >Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -22,7 +22,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
               <li id = "nav-user"> Good {{partOfDay}}, &nbsp; {{name.firstName}} {{name.lastName}}</li>
             
               <li><h4>Your Courses</h4></li>
-              <li  class = "nav-content courses" ng-repeat = "class in classes" ng-click = "classFilter(class); classChange($index)" style = "cursor: pointer;"
+              <li  class = "nav-content courses" ng-repeat = "class in classes"  ng-click = "classFilter(class); classChange($index)" style = "cursor: pointer;"
               >{{class.name}}
               </li>
               <li class = "nav-content" id = "show"ng-click = "showAll(); classChange(-1)" style = "cursor: pointer; list-style: none;">Show All</li>
@@ -36,7 +36,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
   
 
     <div class = "col-sm-9 col-lg-10">
-      <div class="container">
+      <div class="full">
         <div class = "row-fluid">
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
@@ -51,7 +51,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addAnnouncementModal()">+</div>
+            <div class = "tab-footer change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addAnnouncementModal()"><center><i class="fa fa-plus-circle plus fa-2x" aria-hidden="true"></i></center></div>
           </div>
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
@@ -66,22 +66,22 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div class = " change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addContentModal()">+</div>
+            <div class = "tab-footer change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addContentModal()"><center><i class="fa fa-plus-circle plus fa-2x" aria-hidden="true"></i></center></div>
           </div>
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
               <h3 class ="tab-header" > <span class = "glyphicon glyphicon-pencil tab-icon"></span>ASSIGNMENTS</h3>
               <div id = "tab-assignment" class ="tab-body">
               <ul>
-                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
-                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "assignment in assignments | filter: criteriaMatch(a) track by $index" ng-click = "showAssignmentDetailModal(assignment)">
+                  <span class = "tab-announcement-subject">{{assignment.assignment_name}}</span>
                   <br> 
-                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <span class = "tab-announcement-class">{{assignment.name}}</span>
                   <hr>
                 </li>
               </ul>
             </div>
-            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = "tab-footer change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "addAssignmentModal()"><center><i class="fa fa-plus-circle plus fa-2x" aria-hidden="true"></i></center></div>
           </div>
 
 
@@ -97,7 +97,7 @@ glyphicon glyphicon-blackboard"></span>BentoBoard</strong>
                 </li>
               </ul>
             </div>
-            <div class = "change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()">+</div>
+            <div class = "tab-footer change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()"><center><i class="fa fa-plus-circle plus fa-2x" aria-hidden="true"></i></center></div>
           </div>
 
 

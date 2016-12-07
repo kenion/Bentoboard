@@ -1,15 +1,23 @@
 var app = angular.module("app");
 
 var assignment = {};
-app.service("assignmentService",["$http",function($http){
+app.service("assignmentService",["$http",'$window',function($http,$window){
 
   return({
     getStudentAssignment: getStudentAssignment,
     getProfessorAssignment: getProfessorAssignment,
     setAssignment: setAssignment,
     getAssignment: getAssignment,
-    deleteAssignment: deleteAssignment
+    deleteAssignment: deleteAssignment,
+    downloadFile : downloadFile
   })
+
+  function downloadFile(id){
+    return $http.get("/downloadAssignment/"+id)
+    .success(function(data, status, headers, config) {
+        $window.open('/downloadAssignment/'+id); //does the download
+      })
+  }
 
   function getStudentAssignment(id){
     return $http.get("/getAssignment/student/"+id)

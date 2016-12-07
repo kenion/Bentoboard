@@ -73,10 +73,12 @@
               <div id = "tab-assignment" class ="tab-body">
               <ul>
                 <li class = "tab-list" style = "list-style: none;"  ng-repeat = "assignment in assignments | filter: criteriaMatch(a) track by $index" ng-click = "showAssignmentDetailModal(assignment)">
-                  <span class = "tab-announcement-subject">{{assignment.assignment_name}}</span>
+                  <span class = "tab-announcement-subject"><i class="fa fa-file-text-o fa-lg" style = "float: right; padding: 10px;"aria-hidden="true" ng-show = "assignment.file_name != null"></i>{{assignment.assignment_name}}</span>
                   <br> 
                   <span class = "tab-announcement-class">{{assignment.name}}</span>
                   <hr>
+
+                
                 </li>
               </ul>
             </div>

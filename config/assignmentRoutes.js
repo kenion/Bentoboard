@@ -2,10 +2,10 @@ var getStudentAssignment  = "SELECT a.assignment_id, a.assignment_name, a.class_
 "FROM assignment a INNER JOIN assignment_ref_student s ON a.assignment_id  = s.assignment_id "+
 "INNER JOIN class c ON c.class_id = a.class_id WHERE student_id = ?;";
 
-var getProfessorAssignment = "SELECT a.assignment_id, a.assignment_name, a.class_id, a.body,a.file_location, c.name, a.date "+
+var getProfessorAssignment = "SELECT a.assignment_id, a.assignment_name, a.class_id, a.body,a.file_location, c.name, a.date,a.file_name "+
 "FROM assignment a INNER JOIN class c ON c.class_id = a.class_id WHERE professor_id = ?;";
 
-var afterInsert = "SELECT a.assignment_id, a.assignment_name, a.class_id, a.body,a.file_location, c.name, a.date "+
+var afterInsert = "SELECT a.assignment_id, a.assignment_name, a.class_id, a.body,a.file_location, c.name, a.date, a.file_name "+
 "FROM assignment a INNER JOIN class c ON c.class_id = a.class_id WHERE assignment_id = ?;"
 
 module.exports.connect = function(app,con,passport,io,upload,fs){
@@ -30,6 +30,19 @@ module.exports.connect = function(app,con,passport,io,upload,fs){
       }
       else{
         res.json(data);
+      }
+    })
+  })
+
+  app.get("/downloadAssignment/:id",function(req,res){
+    con.query("SELECT file_location FROM assignment WHERE assignment_id = ?",[req.params.id],function(err,data){
+      if(err){
+        res.json({error:"Error downloading file"})
+      }
+      else{
+        var file =  data[0].file_location;
+        console.log(file);
+        res.download(file); // Set disposition and send it.
       }
     })
   })

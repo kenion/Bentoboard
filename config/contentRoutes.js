@@ -46,7 +46,6 @@ module.exports.connect = function(app,con,passport,io,upload,fs){
         res.json({error: "Error to gather data"});
       }
       else{
-        console.log(data);
         res.json(data);
       }
     })
@@ -81,7 +80,6 @@ module.exports.connect = function(app,con,passport,io,upload,fs){
       }
       else{
         var file =  data[0].file_location;
-        console.log(file);
         res.download(file); // Set disposition and send it.
       }
     })

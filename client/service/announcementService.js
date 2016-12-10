@@ -47,4 +47,6 @@ app.service("announcementService",["$http","userService",function($http,userServ
     console.log(data);
     return $http.post("delete/announcement",data);
   }
+
+  
 }])

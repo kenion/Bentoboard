@@ -10,12 +10,26 @@
           <p>{{assignment.body}}</p>
 
       </div>
-
+      <br>
+            
       <div class = "modal-footer">
+        <div style = "padding: 10px;" ng-show = "type === 'student'">
+          
+          <div style = "clear:both; text-align: left;">
+            <label > Comment</label>
+            <br>
+            <textarea name="" id="" class="form-control" rows="10" ng-model = "comment"></textarea>
+          </div>
+          <br>
+          <label style = "float: left;">Upload File</label> 
+          <input type="file" style = "clear:both;" file-model="myFile" />
+        </div>
+
         <span style = "opacity: 0.5; float: left;" ng-show = "assignment.file_name != null">File: {{assignment.file_name}}</span>
         <br>
         <span style = "opacity: 0.5; float: left;">{{assignment.date|date:'medium'}}</span>
         <button  ng-click="close('delete')" ng-if= "type === 'professor'"data-dismiss="modal" class = "btn btn-warning">Delete</button>
+        <button  ng-click="submitAssignment()" ng-if = "type == 'student'"ng-disabled= "myFile == null"data-dismiss="modal" class = "btn btn-success">Submit</button>
         <button ng-click = "download()" class = " btn btn-success" ng-show = "assignment.file_name != null"> Download</button>
         <button  ng-click="close('cancel')" data-dismiss="modal" class = "btn btn-danger">Close</button>
       </div>

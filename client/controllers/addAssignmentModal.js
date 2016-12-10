@@ -12,6 +12,7 @@ app.controller('addAssignment', [ "$scope",'userService',"close",'$http',functio
     fd.append('file', file);
     fd.append('body', $scope.body);
     fd.append('assignment_name', $scope.subject);
+    fd.append('full_grade', $scope.fullGrade);
     fd.append('class_id',userService.getClass().class_id);
     fd.append('professor_id', userService.getProfessorID());
 

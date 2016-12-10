@@ -72,7 +72,7 @@
               <h3 class ="tab-header" > <span class = "glyphicon glyphicon-pencil tab-icon"></span>ASSIGNMENTS</h3>
               <div id = "tab-assignment" class ="tab-body">
               <ul>
-                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "assignment in assignments | filter: criteriaMatch(a) track by $index" ng-click = "showAssignmentDetailModal(assignment)">
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "assignment in assignments | filter: criteriaMatch(a) track by $index" ng-click = "showAssignmentDetailModal(assignment,$index)">
                   <span class = "tab-announcement-subject"><i class="fa fa-file-text-o fa-lg" style = "float: right; padding: 10px;"aria-hidden="true" ng-show = "assignment.file_name != null"></i>{{assignment.assignment_name}}</span>
                   <br> 
                   <span class = "tab-announcement-class">{{assignment.name}}</span>
@@ -88,20 +88,28 @@
 
           <div class=" col-sm-7 col-lg-5 tab-top" >
               <h3 class ="tab-header" > <span class = "glyphicon glyphicon-list-alt tab-icon"></span>GRADES</h3>
+
+              <input type="text" ng-show = "userData.professor_id != null"class = "form-control" placeholder = "Student First Name" ng-model = "studentSearch.student_first_name" style = " border-radius: 0;">
               <div id = "tab-grade" class ="tab-body">
               <ul>
-                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "announcement in announcements | filter: criteriaMatch(a) track by $index" ng-click = "showDetailModal(announcement)">
-                  <span class = "tab-announcement-subject">{{announcement.subject}}</span>
+                <li class = "tab-list" style = "list-style: none;"  ng-repeat = "grade in grades | filter: studentSearch" ng-click = "showGradeDetailModal(grade)">
+                  <span class = "tab-announcement-subject">{{grade.assignment_name}}</span>
+
                   <br> 
-                  <span class = "tab-announcement-class">{{announcement.name}}</span>
+                  <span>{{grade.student_first_name}} {{grade.student_last_name}}</span>
+                  <strong style = "float:right; margin-right: 5px; font-size: 20px;">
+                  <span ng-show = "grade.grade == null" >Not Graded</span>
+                  <span ng-show = "grade.grade != null" >{{grade.grade}}/{{grade.full_grade}}</span>
+                  </strong>
+                  <br>
+                  <span class = "tab-announcement-class">{{grade.name}}</span>
+                  
                   <hr>
                 </li>
               </ul>
             </div>
-            <div class = "tab-footer change" ng-if = "classID !== undefined && userData.professor_id != null" ng-click = "showModal()"><center><i class="fa fa-plus-circle plus fa-2x" aria-hidden="true"></i></center></div>
           </div>
-
-
+        
         </div>
       </div>
     </div>

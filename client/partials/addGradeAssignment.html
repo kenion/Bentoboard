@@ -1,0 +1,47 @@
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="close('cancel')" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Grade Assignment</h3>
+        <h4>{{grade.student_first_name}} {{grade.student_last_name}}</h4>
+      </div>
+      <div class="modal-body">
+            <strong>Assignment Name:</strong>
+            <p>{{grade.assignment_name}}</p>
+            <br>
+            
+            <strong>Body:</strong>
+            <p>{{grade.body}}</p>
+            <br>
+            <label>Grade:</label>
+            <br>
+            <input ng-hide = "grade.grade != null || type == 'student' " type="number" min="1" max="999" class="form-control" style = "width: 15%;display:inline;" ng-model = "givenGrade">
+            <span ng-show = "grade.grade == null && type == 'student'" >Not Graded</span>
+            <span ng-show = "grade.grade != null" >{{grade.grade}}</span>
+
+            <span>/{{grade.full_grade}}</span>
+            <br>
+            <div ng-hide = "grade.student_comment == 'undefined'">
+              <br>
+              <label>Student Comment:</label>
+              <p>{{grade.student_comment}}</p>
+            </div>
+      </div>
+      <div class = "modal-footer" >
+        <div ng-hide = "commentFieldChecker()" style = "text-align: left;">
+
+          <label >Comment:</label>
+          <textarea name="" id="" class="form-control" rows="10" ng-model = "professorComment" ng-hide = "grade.grade != null"></textarea>
+          <p ng-show = "grade.grade != null && grade.professor_comment != null">{{grade.professor_comment}}</p>
+          <p ng-show = "grade.grade != null && grade.professor_comment == null" >No Comments</p>
+        </div>
+        <br>
+        <span style = "margin-right: 35%;" class = "text-danger">{{error}}</span>
+        
+        <button ng-click="download()" class="btn btn-success" style = "font-style: bold;" data-dismiss="modal">Download</button>
+        <button ng-click="submitGrade()" ng-disabled = "givenGrade == null" ng-show = "type == 'professor'"class="btn btn-primary" style = "font-style: bold;" data-dismiss="modal">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
